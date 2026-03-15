@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+model Terrain {
+  id              String   @id @default(cuid())
+  ilot            Int
+  lot             Int
+  groupe          String?  // A, B, C, etc.
+  secteur         String?  // DW, MO, etc.
+  parcelle        Int?
+  execution       String?  // NF, F
+  etat            String?  // Sans, L, L55, N, etc.
+  titreFoncier    String?
+  tp              String?  // ACD, AD, RIR, LA, ACP, TLA, Sans
+  numeroTitreProp String?
+  annee           Int?
+  pubJO           String?  // OUI, NON
+  dateJO          String?
+  nature          String?  // BAT, BAT DUP, BAT R+2, CLOT, EC, HL, NBC, NBNC, TN
+  imm             String?  // Immatriculation
+  possesseur      String?
+  contact         String?
+  email           String?
+  statut          String   @default("Dispo") // Dispo, Réservé, Vendu, En cours
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([ilot, lot])
+}
+
+model RecentSearch {
+  id        String   @id @default(cuid())
+  ilot      Int
+  lot       Int
+  createdAt DateTime @default(now())
+}
